@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Widerock Academy — Computer science, explained clearly</title>
+<meta name="description" content="Tutorials and deep dives on programming, software development, AI, and cybersecurity. Subscribe on YouTube.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0E1B2A;
+    --bg-grid: #16283D;
+    --bg-panel: #122236;
+    --paper: #F0EDE4;
+    --paper-dim: #C7CDD3;
+    --accent: #E8A33D;
+    --accent-dim: #8A6A34;
+    --teal: #6FA8A6;
+    --muted: #7E93A8;
+    --rule: #24384F;
+    --maxw: 880px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--bg-grid) 1px, transparent 1px) 0 0/100% 42px,
+      linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px) 0 0/42px 100%,
+      var(--bg);
+    background-attachment: fixed;
+    color: var(--paper);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: var(--teal); text-decoration: none; }
+  a:hover{ text-decoration: underline; text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible{ outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Header ---------- */
+  header{
+    padding: 28px 0 24px;
+    border-bottom: 1px solid var(--rule);
+  }
+  header .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size: 1.15rem;
+    letter-spacing: 0.01em;
+  }
+  .brand .dot{ color: var(--accent); }
+  .brand small{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:400;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding: 9px 18px;
+    background: var(--accent);
+    color: #1A1204;
+    font-weight: 600;
+    font-size: 0.92rem;
+    border-radius: 3px;
+    border: 1px solid var(--accent);
+    cursor:pointer;
+    font-family: inherit;
+  }
+  .btn:hover{ background:#f2ae4a; text-decoration:none; }
+  .btn-ghost{
+    background: transparent;
+    color: var(--paper);
+    border: 1px solid var(--rule);
+  }
+  .btn-ghost:hover{ border-color: var(--muted); background: transparent; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding: 72px 0 56px;
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items:center;
+  }
+  .hero h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.1rem, 4.4vw, 3.1rem);
+    line-height: 1.12;
+    margin: 0 0 20px;
+    max-width: 14ch;
+  }
+  .hero p{
+    color: var(--paper-dim);
+    font-size: 1.05rem;
+    max-width: 46ch;
+    margin: 0 0 28px;
+  }
+  .hero-ctas{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+  .handle{
+    font-family:'IBM Plex Mono', monospace;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* Node diagram */
+  .diagram{ width:100%; height:auto; }
+  .diagram text{
+    font-family:'IBM Plex Mono', monospace;
+    fill: var(--paper);
+    font-size: 12.5px;
+  }
+  .diagram .sub{ fill: var(--muted); font-size: 10.5px; }
+  .diagram line{ stroke: var(--rule); stroke-width: 1.4; }
+  .diagram circle.node{ fill: var(--bg-panel); stroke: var(--teal); stroke-width: 1.6; }
+  .diagram circle.core{ fill: var(--accent); stroke: none; }
+  .diagram circle.pulse{
+    fill: none; stroke: var(--accent); stroke-width: 1;
+    opacity: 0.55;
+    transform-origin: center;
+    animation: pulse 3.2s ease-out infinite;
+  }
+  @keyframes pulse{
+    0%{ r: 6; opacity: 0.6; }
+    100%{ r: 34; opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .diagram .pulse{ animation: none; opacity: 0; }
+  }
+
+  /* ---------- Topics ---------- */
+  .topics{ padding: 8px 0 64px; border-top: 1px solid var(--rule); padding-top: 56px; }
+  .section-label{
+    font-family:'IBM Plex Mono', monospace;
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin: 0 0 28px;
+  }
+  .topic-list{ list-style:none; margin:0; padding:0; }
+  .topic-list li{
+    display:grid;
+    grid-template-columns: 160px 1fr;
+    gap: 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .topic-list li:first-child{ padding-top: 0; }
+  .topic-name{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--paper);
+  }
+  .topic-desc{ color: var(--paper-dim); font-size: 0.97rem; max-width: 52ch; }
+
+  /* ---------- Latest ---------- */
+  .latest{ padding: 8px 0 64px; border-top: 1px solid var(--rule); padding-top: 56px; }
+  .video-row{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .video-card{
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow:hidden;
+    background: var(--bg-panel);
+  }
+  .video-thumb{
+    aspect-ratio: 16/9;
+    background:
+      repeating-linear-gradient(135deg, var(--rule) 0 2px, transparent 2px 14px);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .video-thumb::after{
+    content:"";
+    width:0; height:0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-left: 14px solid var(--accent);
+    margin-left: 4px;
+  }
+  .video-meta{ padding: 14px 16px 18px; }
+  .video-meta h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size: 0.98rem;
+    font-weight: 600;
+    margin: 0 0 6px;
+    line-height: 1.35;
+  }
+  .video-meta span{
+    font-family:'IBM Plex Mono', monospace;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+  .latest-note{
+    margin-top: 18px;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* ---------- CTA band ---------- */
+  .cta-band{
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 48px 0;
+    background: var(--bg-panel);
+  }
+  .cta-band .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .cta-band h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    margin: 0 0 6px;
+  }
+  .cta-band p{ margin:0; color: var(--paper-dim); }
+
+  /* ---------- Footer ---------- */
+  footer{ padding: 40px 0 56px; }
+  footer .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .foot-links{ display:flex; gap: 20px; flex-wrap: wrap; }
+  .foot-links a{ color: var(--muted); font-size: 0.9rem; }
+  .foot-links a:hover{ color: var(--paper); }
+  .copyright{
+    font-family:'IBM Plex Mono', monospace;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  @media (max-width: 760px){
+    .hero{ grid-template-columns: 1fr; padding-top: 48px; }
+    .diagram{ order: -1; max-width: 320px; margin: 0 auto; }
+    .topic-list li{ grid-template-columns: 1fr; gap: 6px; }
+    .video-row{ grid-template-columns: 1fr; }
+    .cta-band .wrap{ flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      Tech Widerock<span class="dot">.</span>Academy
+      <small>techwiderockacademy.com</small>
+    </div>
+    <a class="btn" href="https://youtube.com/@techwiderockacademy?sub_confirmation=1" target="_blank" rel="noopener">Subscribe on YouTube</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap" style="display:contents;">
+    <div>
+      <h1>Computer science, explained clearly.</h1>
+      <p>Tutorials and breakdowns across programming, software development, artificial intelligence, and cybersecurity — for people who want to actually understand the topic, not just copy the code.</p>
+      <div class="hero-ctas">
+        <a class="btn" href="https://youtube.com/@techwiderockacademy?si=07whZpw1OUx7IP7o" target="_blank" rel="noopener">Watch on YouTube</a>
+        <a class="btn btn-ghost" href="#topics">See what we cover</a>
+      </div>
+      <p class="handle" style="margin-top:22px;">@techwiderockacademy</p>
+    </div>
+
+    <svg class="diagram" viewBox="0 0 340 300" role="img" aria-label="Diagram connecting core topics: programming, AI, cybersecurity, and software development">
+      <line x1="170" y1="150" x2="80" y2="70"></line>
+      <line x1="170" y1="150" x2="270" y2="60"></line>
+      <line x1="170" y1="150" x2="60" y2="220"></line>
+      <line x1="170" y1="150" x2="260" y2="235"></line>
+
+      <circle class="pulse" cx="170" cy="150" r="6"></circle>
+      <circle class="core" cx="170" cy="150" r="7"></circle>
+      <text x="170" y="177" text-anchor="middle">CS Academy</text>
+
+      <circle class="node" cx="80" cy="70" r="5"></circle>
+      <text x="80" y="52" text-anchor="middle">Programming</text>
+      <text class="sub" x="80" y="93" text-anchor="middle">languages &amp; patterns</text>
+
+      <circle class="node" cx="270" cy="60" r="5"></circle>
+      <text x="270" y="42" text-anchor="middle">AI</text>
+      <text class="sub" x="270" y="83" text-anchor="middle">models &amp; tooling</text>
+
+      <circle class="node" cx="60" cy="220" r="5"></circle>
+      <text x="60" y="245" text-anchor="middle">Cybersecurity</text>
+      <text class="sub" x="60" y="200" text-anchor="middle">practices &amp; risks</text>
+
+      <circle class="node" cx="260" cy="235" r="5"></circle>
+      <text x="260" y="260" text-anchor="middle">Dev Practices</text>
+      <text class="sub" x="260" y="215" text-anchor="middle">methodology</text>
+    </svg>
+  </div>
+</section>
+
+<section class="topics" id="topics">
+  <div class="wrap">
+    <p class="section-label">// what we cover</p>
+    <ul class="topic-list">
+      <li>
+        <span class="topic-name">Programming</span>
+        <span class="topic-desc">Language fundamentals, idioms, and the kind of practical patterns that don't show up in the official docs.</span>
+      </li>
+      <li>
+        <span class="topic-name">Software Development</span>
+        <span class="topic-desc">Methodologies, architecture decisions, and the reasoning behind how real systems get built and maintained.</span>
+      </li>
+      <li>
+        <span class="topic-name">Artificial Intelligence</span>
+        <span class="topic-desc">How modern AI tools actually work under the hood, and how to use them well without the hype.</span>
+      </li>
+      <li>
+        <span class="topic-name">Cybersecurity</span>
+        <span class="topic-desc">The concepts and habits that hold up systems and data — explained from first principles, not fear.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="latest">
+  <div class="wrap">
+    <p class="section-label">// latest on the channel</p>
+    <div class="video-row">
+      <div class="video-card">
+        <div class="video-thumb"></div>
+        <div class="video-meta">
+          <h3>Video title goes here</h3>
+          <span>Programming</span>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb"></div>
+        <div class="video-meta">
+          <h3>Video title goes here</h3>
+          <span>AI</span>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb"></div>
+        <div class="video-meta">
+          <h3>Video title goes here</h3>
+          <span>Cybersecurity</span>
+        </div>
+      </div>
+    </div>
+    <p class="latest-note">Swap these three cards for your real latest uploads — thumbnail, title, and topic tag. See the comment near the top of the HTML for exactly where to edit.</p>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <div>
+      <h2>New videos, straight to your feed.</h2>
+      <p>Subscribe once — no spam, just the tutorials.</p>
+    </div>
+    <a class="btn" href="https://youtube.com/@techwiderockacademy?sub_confirmation=1" target="_blank" rel="noopener">Subscribe on YouTube</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="https://youtube.com/@techwiderockacademy?si=07whZpw1OUx7IP7o" target="_blank" rel="noopener">YouTube</a>
+      <!-- Add more links as you set them up, e.g.: -->
+      <!-- <a href="https://x.com/yourhandle" target="_blank" rel="noopener">X / Twitter</a> -->
+      <!-- <a href="mailto:you@techwiderockacademy.com">Email</a> -->
+    </div>
+    <p class="copyright">© 2026 Tech Widerock Academy</p>
+  </div>
+</footer>
+
+</body>
+</html>
+<!--
+  EDITING GUIDE
+  1. "Latest on the channel" section: replace the 3 placeholder .video-card
+     blocks with your real videos. For each: set the h3 text to the video
+     title, the <span> to its topic tag, and if you want a real thumbnail,
+     replace the empty .video-thumb div with:
+     <img src="YOUR_THUMBNAIL_URL" alt="Video title" style="width:100%;height:100%;object-fit:cover;">
+  2. Footer: uncomment/add links for any other socials once you have them.
+  3. Colors/fonts are set as CSS variables at the top of <style> if you
+     want to adjust the palette later.
+-->
